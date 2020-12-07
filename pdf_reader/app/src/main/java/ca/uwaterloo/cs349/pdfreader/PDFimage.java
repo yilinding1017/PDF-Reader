@@ -53,6 +53,7 @@ public class PDFimage extends ImageView {
     float middleX=0;
     float middleY=0;
 
+
     // constructor
     public PDFimage(Context context) {
         super(context);
@@ -74,11 +75,13 @@ public class PDFimage extends ImageView {
         if(pointer == 1) {
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
+                    //isMoved = false;
                     Log.d(LOGNAME, "Action down");
                     path = new Path();
                     path.moveTo(event.getX(), event.getY());
                     break;
                 case MotionEvent.ACTION_MOVE:
+                    //isMoved = true;
                     Log.d(LOGNAME, "Action move");
                     path.lineTo(event.getX(), event.getY());
                     // Erase Mode
@@ -135,6 +138,7 @@ public class PDFimage extends ImageView {
                         undoStack.push(annotaions.get(annotaions.size() - 1));
                     }
                     path = null;
+                    //isMoved = false;
                     break;
             }
         } else {
