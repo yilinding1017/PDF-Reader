@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <!--    <ImageView-->
+    <!--            android:id="@+id/pdfImage"-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="match_parent"-->
+    <!--            android:background="@android:color/white"-->
+    <!--            android:contentDescription="@null"-->
+    <!--            android:scaleType="fitCenter" />-->
+
+    <LinearLayout
+        android:id="@+id/pdfLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/pageSwitch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:measureWithLargestChild="true"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="@+id/pdfLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <Button
+            android:id="@+id/prebutton"
+            style="@android:style/Widget.DeviceDefault.Light.Button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Previous" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="15dp"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:fontFamily="sans-serif-medium"
+            android:gravity="center"
+            android:text="1/55"
+            android:textAllCaps="false"
+            android:textColor="#000000"
+            android:textSize="18sp"
+            app:autoSizeTextType="none" />
+
+        <Button
+            android:id="@+id/nextbutton"
+            style="@android:style/Widget.DeviceDefault.Light.Button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Next" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/undoredo"
+        android:layout_width="match_parent"
+        android:layout_height="28dp"
+        android:layout_marginTop="26dp"
+        android:gravity="center|fill_horizontal"
+        android:measureWithLargestChild="true"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/pdfLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <Button
+            android:id="@+id/undobutton"
+            style="@android:style/Widget.Holo.Light.Button"
+            android:layout_width="1dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="#2800A4"
+            android:text="Undo"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold|italic" />
+
+        <Button
+            android:id="@+id/redobutton"
+            style="@android:style/Widget.Holo.Light.Button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="#FF2800A4"
+            android:text="Redo"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold|italic" />
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
