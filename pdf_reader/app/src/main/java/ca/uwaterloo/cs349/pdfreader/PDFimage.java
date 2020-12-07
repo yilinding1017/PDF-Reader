@@ -40,6 +40,19 @@ public class PDFimage extends ImageView {
     Stack<Annotation> undoStack = new Stack<>();
     Stack<Annotation> redoStack = new Stack<>();
 
+    float startX1 = 0;
+    float startY1 = 0;
+    float startX2 = 0;
+    float startY2 = 0;
+    Matrix pdfMatrix;
+    Matrix defaultMatrix;
+
+    float translateX=0;
+    float translateY=0;
+    float scale=1;
+    float middleX=0;
+    float middleY=0;
+
     // constructor
     public PDFimage(Context context) {
         super(context);
@@ -48,74 +61,121 @@ public class PDFimage extends ImageView {
             annotLst.add(new ArrayList<Annotation>());
         }
         annotaions = annotLst.get(0);
+
+        /*pdfMatrix = this.getImageMatrix();
+        defaultMatrix = this.getImageMatrix();*/
     }
 
     // capture touch events (down/move/up) to create a path
     // and use that to create a stroke that we can draw
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        switch (event.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                Log.d(LOGNAME, "Action down");
-                path = new Path();
-                path.moveTo(event.getX(), event.getY());
-                break;
-            case MotionEvent.ACTION_MOVE:
-                Log.d(LOGNAME, "Action move");
-                path.lineTo(event.getX(), event.getY());
-                // Erase Mode
-                if (MainActivity.mode == 2) {
-                    Region eraseRegion = new Region();
-                    RectF eraseBound = new RectF();
-                    path.computeBounds(eraseBound,true);
+        int pointer = event.getPointerCount();
+        if(pointer == 1) {
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    Log.d(LOGNAME, "Action down");
+                    path = new Path();
+                    path.moveTo(event.getX(), event.getY());
+                    break;
+                case MotionEvent.ACTION_MOVE:
+                    Log.d(LOGNAME, "Action move");
+                    path.lineTo(event.getX(), event.getY());
+                    // Erase Mode
+                    if (MainActivity.mode == 2) {
+                        Region eraseRegion = new Region();
+                        RectF eraseBound = new RectF();
+                        path.computeBounds(eraseBound, true);
 
-                    if (eraseBound.top - eraseBound.bottom == 0){
-                        eraseBound.top -= 0.1;
-                        eraseRegion.set(new Rect((int)eraseBound.left,(int)eraseBound.top,(int)eraseBound.right,(int)eraseBound.bottom));
-                    } else if (eraseBound.right - eraseBound.left == 0){
-                        eraseBound.left -= 0.1;
-                        eraseRegion.set(new Rect((int)eraseBound.left,(int)eraseBound.top,(int)eraseBound.right,(int)eraseBound.bottom));
-                    } else{
-                        eraseRegion.setPath(path, new Region((int)eraseBound.left, (int)eraseBound.top,(int)eraseBound.right, (int)eraseBound.bottom));
-                    }
-
-                    //eraseRegion.setPath(path, new Region(0,0,this.getWidth(),this.getHeight()));
-
-                    for (Annotation epath : annotaions) {
-                        if(!epath.isVisible) continue;
-                        Region pathRegion = new Region();
-                        RectF pathBound = new RectF();
-                        epath.path.computeBounds(pathBound, true);
-
-                        if (pathBound.top - pathBound.bottom == 0){
-                            pathBound.top -= 0.1;
-                            pathRegion.set(new Rect((int)pathBound.left,(int)pathBound.top,(int)pathBound.right,(int)pathBound.bottom));
-                        } else if (pathBound.left - pathBound.right == 0){
-                            pathBound.left -= 0.1;
-                            pathRegion.set(new Rect((int)pathBound.left,(int)pathBound.top,(int)pathBound.right,(int)pathBound.bottom));
-                        } else{
-                            pathRegion.setPath(epath.path, new Region((int) pathBound.left, (int) pathBound.top,(int) pathBound.right, (int) pathBound.bottom));
+                        if (eraseBound.top - eraseBound.bottom == 0) {
+                            eraseBound.top -= 0.1;
+                            eraseRegion.set(new Rect((int) eraseBound.left, (int) eraseBound.top, (int) eraseBound.right, (int) eraseBound.bottom));
+                        } else if (eraseBound.right - eraseBound.left == 0) {
+                            eraseBound.left -= 0.1;
+                            eraseRegion.set(new Rect((int) eraseBound.left, (int) eraseBound.top, (int) eraseBound.right, (int) eraseBound.bottom));
+                        } else {
+                            eraseRegion.setPath(path, new Region((int) eraseBound.left, (int) eraseBound.top, (int) eraseBound.right, (int) eraseBound.bottom));
                         }
 
-                        //pathRegion.setPath(epath.path, new Region(0,0,this.getWidth(),this.getHeight()));
+                        //eraseRegion.setPath(path, new Region(0,0,this.getWidth(),this.getHeight()));
 
-                        if(pathRegion.op(eraseRegion,Region.Op.INTERSECT)) {
-                            epath.isVisible = false;
-                            // draw saved in undo stack
-                            undoStack.push(epath);
+                        for (Annotation epath : annotaions) {
+                            if (!epath.isVisible) continue;
+                            Region pathRegion = new Region();
+                            RectF pathBound = new RectF();
+                            epath.path.computeBounds(pathBound, true);
+
+                            if (pathBound.top - pathBound.bottom == 0) {
+                                pathBound.top -= 0.1;
+                                pathRegion.set(new Rect((int) pathBound.left, (int) pathBound.top, (int) pathBound.right, (int) pathBound.bottom));
+                            } else if (pathBound.left - pathBound.right == 0) {
+                                pathBound.left -= 0.1;
+                                pathRegion.set(new Rect((int) pathBound.left, (int) pathBound.top, (int) pathBound.right, (int) pathBound.bottom));
+                            } else {
+                                pathRegion.setPath(epath.path, new Region((int) pathBound.left, (int) pathBound.top, (int) pathBound.right, (int) pathBound.bottom));
+                            }
+
+                            //pathRegion.setPath(epath.path, new Region(0,0,this.getWidth(),this.getHeight()));
+
+                            if (pathRegion.op(eraseRegion, Region.Op.INTERSECT)) {
+                                epath.isVisible = false;
+                                // draw saved in undo stack
+                                undoStack.push(epath);
+                            }
                         }
                     }
-                }
 
-                break;
-            case MotionEvent.ACTION_UP:
-                Log.d(LOGNAME, "Action up");
-                if(MainActivity.mode != 2) {
-                    annotaions.add(new Annotation(path,MainActivity.mode,true));
-                    undoStack.push(annotaions.get(annotaions.size()-1));
-                }
-                path = null;
-                break;
+                    break;
+                case MotionEvent.ACTION_UP:
+                    Log.d(LOGNAME, "Action up");
+                    if (MainActivity.mode != 2) {
+                        annotaions.add(new Annotation(path, MainActivity.mode, true));
+                        undoStack.push(annotaions.get(annotaions.size() - 1));
+                    }
+                    path = null;
+                    break;
+            }
+        } else if(pointer == 2) {
+            this.setScaleType(ScaleType.MATRIX);
+            switch (event.getAction() & MotionEvent.ACTION_MASK) {
+                case MotionEvent.ACTION_POINTER_DOWN:
+                    pdfMatrix = this.getImageMatrix();
+                    startX1 = event.getX(0);
+                    startY1 = event.getY(0);
+                    startX2 = event.getX(1);
+                    startY2 = event.getY(1);
+                    break;
+                case MotionEvent.ACTION_UP:
+                    break;
+                case MotionEvent.ACTION_MOVE:
+                    float endX1 = event.getX(0);
+                    float endY1 = event.getY(0);
+                    float endX2 = event.getX(1);
+                    float endY2 = event.getY(1);
+
+                    double startDis = Math.sqrt(Math.pow(startX1 - startX2, 2) + Math.pow(startY1 - startY2, 2));
+                    double endDis = Math.sqrt(Math.pow(endX1 - endX2, 2) + Math.pow(endY1 - endY2, 2));
+
+                    if(Math.abs(startDis-endDis) < 0.1) {
+                        // Pan mode
+                        translateX = endX1-startX1;
+                        translateY = endY1-startY1;
+                        pdfMatrix.postTranslate(translateX,translateY);
+                    } else {
+                        // Zoom mode
+                        scale = (float) (endDis/startDis);
+                        middleX = (endX1+endX2)/2;
+                        middleY = (endY1+endY2)/2;
+                        pdfMatrix.postScale(scale,scale,middleX,middleY);
+                    }
+
+                    startX1 = event.getX(0);
+                    startY1 = event.getY(0);
+                    startX2 = event.getX(1);
+                    startY2 = event.getY(1);
+
+                    break;
+            }
         }
         return true;
     }
@@ -125,6 +185,8 @@ public class PDFimage extends ImageView {
         this.bitmap = bitmap;
 
         this.annotaions = annotLst.get(index);
+
+        //pdfMatrix = defaultMatrix;
     }
 
     /*public void setPaths(ArrayList<Path> inputpaths) {
@@ -144,10 +206,17 @@ public class PDFimage extends ImageView {
 
     @Override
     protected void onDraw(Canvas canvas) {
+        // Scale/translate canvas
+        //canvas.setScaleType(ScaleType.MATRIX);
+        //Matrix canvasMatrix = canvas.getImageMatrix();
+        //canvas.Translate(translateX,translateY);
+        //canvas.Scale(scale,scale,middleX,middleY);
+
         // draw background
         if (bitmap != null) {
             this.setImageBitmap(bitmap);
         }
+        this.setImageMatrix(pdfMatrix);
         // draw lines over it
         for (Annotation annot : annotaions) {
             if(annot.isVisible) {

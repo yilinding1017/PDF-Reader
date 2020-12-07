@@ -89,6 +89,8 @@ public class MainActivity extends AppCompatActivity {
         pageImage.setMinimumWidth(1000);
         pageImage.setMinimumHeight(2000);
 
+        pageImage.defaultMatrix = pageImage.getImageMatrix();
+        pageImage.pdfMatrix = pageImage.getImageMatrix();
         // open page 0 of the PDF
         // it will be displayed as an image in the pageImage (above)
         try {
