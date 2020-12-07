@@ -1,4 +1,4 @@
-*Yilin Ding*<br>*20765311 y264ding*<br>*macOS 11.0.1 (MacBook Pro 2019)*<br>*openjdk version "11.0.8" 2020-07-14*<br>*Android SDK: minSdkVersion 26, targetSdkVersion 30*<br>*Sources used/refered:*<br>https://www.flaticon.com/<br>
+*Yilin Ding*<br>*20765311 y264ding*<br>*macOS 11.0.1 (MacBook Pro 2019)*<br>*openjdk version "11.0.8" 2020-07-14*<br>*Android SDK: minSdkVersion=16, targetSdkVersion=30*<br>*Sources used/refered:*<br>https://www.flaticon.com/<br>
 
 ### Application Description:
 
