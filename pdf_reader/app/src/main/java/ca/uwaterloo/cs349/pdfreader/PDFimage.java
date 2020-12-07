@@ -83,15 +83,17 @@ public class PDFimage extends ImageView {
                     path.lineTo(event.getX(), event.getY());
                     // Erase Mode
                     if (MainActivity.mode == 2) {
+                        // Referenced idea from
+                        // https://stackoverflow.com/questions/9843578/collision-detection-with-bitmaps-on-surfaceviews-canvas-in-android/9918830#9918830
                         Region eraseRegion = new Region();
                         RectF eraseBound = new RectF();
                         path.computeBounds(eraseBound, true);
 
-                        if (eraseBound.top - eraseBound.bottom == 0) {
-                            eraseBound.top -= 0.2;
+                        if (eraseBound.top == eraseBound.bottom) {
+                            eraseBound.bottom += 0.2;
                             eraseRegion.set(new Rect((int) eraseBound.left, (int) eraseBound.top, (int) eraseBound.right, (int) eraseBound.bottom));
-                        } else if (eraseBound.left - eraseBound.right == 0) {
-                            eraseBound.left -= 0.2;
+                        } else if (eraseBound.left  == eraseBound.right) {
+                            eraseBound.right += 0.2;
                             eraseRegion.set(new Rect((int) eraseBound.left, (int) eraseBound.top, (int) eraseBound.right, (int) eraseBound.bottom));
                         } else {
                             eraseRegion.setPath(path, new Region((int) eraseBound.left, (int) eraseBound.top, (int) eraseBound.right, (int) eraseBound.bottom));
@@ -105,11 +107,11 @@ public class PDFimage extends ImageView {
                             RectF pathBound = new RectF();
                             epath.path.computeBounds(pathBound, true);
 
-                            if (pathBound.top - pathBound.bottom == 0) {
-                                pathBound.top -= 0.2;
+                            if (pathBound.top  == pathBound.bottom) {
+                                pathBound.bottom += 0.2;
                                 pathRegion.set(new Rect((int) pathBound.left, (int) pathBound.top, (int) pathBound.right, (int) pathBound.bottom));
-                            } else if (pathBound.left - pathBound.right == 0) {
-                                pathBound.left -= 0.2;
+                            } else if (pathBound.left  == pathBound.right) {
+                                pathBound.right += 0.2;
                                 pathRegion.set(new Rect((int) pathBound.left, (int) pathBound.top, (int) pathBound.right, (int) pathBound.bottom));
                             } else {
                                 pathRegion.setPath(epath.path, new Region((int) pathBound.left, (int) pathBound.top, (int) pathBound.right, (int) pathBound.bottom));
@@ -135,7 +137,9 @@ public class PDFimage extends ImageView {
                     path = null;
                     break;
             }
-        } else if(pointer == 2) {
+        } else {
+            // Referenced the ideas from
+            // https://developer.android.com/training/gestures/scale?fbclid=IwAR03NPGuy-lI28BVKUvPbKnUmrATfNHV02tgPDTVpX_CQg8zTyBxnfAtH1w
             this.setScaleType(ScaleType.MATRIX);
             switch (event.getAction() & MotionEvent.ACTION_MASK) {
                 case MotionEvent.ACTION_POINTER_DOWN:
@@ -156,7 +160,7 @@ public class PDFimage extends ImageView {
                     double startDis = Math.sqrt(Math.pow(startX1 - startX2, 2) + Math.pow(startY1 - startY2, 2));
                     double endDis = Math.sqrt(Math.pow(endX1 - endX2, 2) + Math.pow(endY1 - endY2, 2));
 
-                    if(Math.abs(startDis-endDis) < 0.1) {
+                    if(Math.abs(startDis-endDis) < 1) {
                         // Pan mode
                         translateX = endX1-startX1;
                         translateY = endY1-startY1;

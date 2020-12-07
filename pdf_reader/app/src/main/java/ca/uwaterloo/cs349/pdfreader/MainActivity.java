@@ -76,11 +76,11 @@ public class MainActivity extends AppCompatActivity {
         pencil.setAntiAlias(true);
         pencil.setStyle(Paint.Style.STROKE);
         pencil.setStrokeWidth(6);
-        pencil.setColor(Color.BLACK);
+        pencil.setColor(Color.BLUE);
 
         highlighter.setAntiAlias(true);
         highlighter.setStyle(Paint.Style.STROKE);
-        highlighter.setStrokeWidth(28);
+        highlighter.setStrokeWidth(30);
         highlighter.setARGB(70,255,255,0);
 
         pageImage.setBrush(pencil);
