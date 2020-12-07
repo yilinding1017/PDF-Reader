@@ -160,7 +160,7 @@ public class PDFimage extends ImageView {
                     double startDis = Math.sqrt(Math.pow(startX1 - startX2, 2) + Math.pow(startY1 - startY2, 2));
                     double endDis = Math.sqrt(Math.pow(endX1 - endX2, 2) + Math.pow(endY1 - endY2, 2));
 
-                    if(Math.abs(startDis-endDis) < 1) {
+                    if(Math.abs(startDis-endDis) < 2) {
                         // Pan mode
                         translateX = endX1-startX1;
                         translateY = endY1-startY1;
