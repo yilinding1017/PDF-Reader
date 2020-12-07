@@ -13,7 +13,7 @@ This **padreader** application will load a sample PDF "shannon1948.pdf" and the 
 - Zoom & Pan
   - Zoom: the user can use two fingers to zoom-in and zoom-out over a focal point on the screen
   - Pan: the users can pan around to reposition the document using two fingers while not zooming
-- Undo & Redo: the user can undo the last actions that were performed by clicking on Undo at the top left corner and they can redo to revert the undo operations by clicking on Redo at the top right corner. A **toast** of 2 seconds will be fired indicating what operations are being undo/redo when undo/redo tool is used.
+- Undo & Redo: the user can undo the last actions that were performed by clicking on Undo at the top left corner and they can redo to revert the undo operations by clicking on Redo at the top right corner. A **toast** of 2 seconds will be fired indicating what operations are being undo/redo when undo/redo tool is used. The undo/redo operation applies to all the pages together. In other words, if your last action occured in another page (other than current page), the undo operation will undo that action in that page.
 - Pages: the first page of the pdf will be displayed when the app is launched and the user can do the followings with the pages
   - the user can move between pages by clicking on previous/next page button at the bottom left/right
   - when the user navigates between pages, the annotations tracked separated per page, and not lost
