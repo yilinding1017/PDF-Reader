@@ -88,10 +88,10 @@ public class PDFimage extends ImageView {
                         path.computeBounds(eraseBound, true);
 
                         if (eraseBound.top - eraseBound.bottom == 0) {
-                            eraseBound.top -= 0.1;
+                            eraseBound.top -= 0.2;
                             eraseRegion.set(new Rect((int) eraseBound.left, (int) eraseBound.top, (int) eraseBound.right, (int) eraseBound.bottom));
-                        } else if (eraseBound.right - eraseBound.left == 0) {
-                            eraseBound.left -= 0.1;
+                        } else if (eraseBound.left - eraseBound.right == 0) {
+                            eraseBound.left -= 0.2;
                             eraseRegion.set(new Rect((int) eraseBound.left, (int) eraseBound.top, (int) eraseBound.right, (int) eraseBound.bottom));
                         } else {
                             eraseRegion.setPath(path, new Region((int) eraseBound.left, (int) eraseBound.top, (int) eraseBound.right, (int) eraseBound.bottom));
@@ -106,10 +106,10 @@ public class PDFimage extends ImageView {
                             epath.path.computeBounds(pathBound, true);
 
                             if (pathBound.top - pathBound.bottom == 0) {
-                                pathBound.top -= 0.1;
+                                pathBound.top -= 0.2;
                                 pathRegion.set(new Rect((int) pathBound.left, (int) pathBound.top, (int) pathBound.right, (int) pathBound.bottom));
                             } else if (pathBound.left - pathBound.right == 0) {
-                                pathBound.left -= 0.1;
+                                pathBound.left -= 0.2;
                                 pathRegion.set(new Rect((int) pathBound.left, (int) pathBound.top, (int) pathBound.right, (int) pathBound.bottom));
                             } else {
                                 pathRegion.setPath(epath.path, new Region((int) pathBound.left, (int) pathBound.top, (int) pathBound.right, (int) pathBound.bottom));

@@ -18,7 +18,9 @@
         android:id="@+id/pdfLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="92dp">
 
     </LinearLayout>
 
@@ -39,7 +41,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Previous" />
+            android:text="Previous Page" />
 
         <TextView
             android:id="@+id/textView"
@@ -60,15 +62,17 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Next" />
+            android:text="Next Page" />
 
     </LinearLayout>
+
 
     <LinearLayout
         android:id="@+id/undoredo"
         android:layout_width="match_parent"
         android:layout_height="28dp"
         android:layout_marginTop="26dp"
+        android:background="#FFFFFF"
         android:gravity="center|fill_horizontal"
         android:measureWithLargestChild="true"
         android:orientation="horizontal"
@@ -81,12 +85,28 @@
             android:id="@+id/undobutton"
             style="@android:style/Widget.Holo.Light.Button"
             android:layout_width="1dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="#2800A4"
+            android:drawableStart="@drawable/undoicon"
+            android:drawableLeft="@drawable/undoicon"
+            android:soundEffectsEnabled="true"
             android:text="Undo"
             android:textColor="#FFFFFF"
             android:textStyle="bold|italic" />
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="6dp"
+            android:layout_height="20dp"
+            android:layout_weight="1"
+            android:fontFamily="sans-serif-medium"
+            android:gravity="center"
+            android:text="  shannon1948.pdf"
+            android:textAllCaps="false"
+            android:textColor="#C83C3838"
+            android:textSize="18sp"
+            app:autoSizeTextType="uniform" />
 
         <Button
             android:id="@+id/redobutton"
@@ -95,10 +115,13 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="#FF2800A4"
+            android:drawableEnd="@drawable/redoicon"
+            android:drawableRight="@drawable/redoicon"
             android:text="Redo"
             android:textColor="#FFFFFF"
             android:textStyle="bold|italic" />
 
     </LinearLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

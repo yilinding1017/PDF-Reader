@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
@@ -141,6 +142,18 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // revert the field
                 if(!pageImage.undoStack.isEmpty()) {
+                    String message;
+
+                    if(!pageImage.undoStack.peek().isVisible) {
+                        message = "Erasing";
+                    } else if(pageImage.undoStack.peek().toolmode == 0) {
+                        message = "Drawing";
+                    } else {
+                        message = "Highlighting";
+                    }
+
+                    Toast.makeText(getApplicationContext(), "Undo " + message, Toast.LENGTH_SHORT).show();
+
                     pageImage.undoStack.peek().isVisible = !(pageImage.undoStack.peek().isVisible);
 
                     pageImage.redoStack.push(pageImage.undoStack.pop());
@@ -152,6 +165,16 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(!pageImage.redoStack.isEmpty()) {
+                    String message;
+
+                    if(pageImage.redoStack.peek().isVisible) {
+                        message = "Erasing";
+                    } else if(pageImage.redoStack.peek().toolmode == 0) {
+                        message = "Drawing";
+                    } else {
+                        message = "Highlighting";
+                    }
+                    Toast.makeText(getApplicationContext(), "Redo " + message, Toast.LENGTH_SHORT).show();
                     // revert the field
                     pageImage.redoStack.peek().isVisible = !(pageImage.redoStack.peek().isVisible);
 
